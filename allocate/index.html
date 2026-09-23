@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- The source carries the full edition's sentence. The
+         allocate-edition-title plugin in vite.config.ts rewrites it at build
+         time for the liquidity edition, which has no Policy or Managers step
+         to name, and og:description is read back off whichever one survives —
+         so in a built page this is the sentence that edition was given. -->
     <meta
       name="description"
       content="Allocate is a close-the-month tool for allocators: liquidity, policy drift, manager changes and a review, every number traced to its input. Demo on synthetic data."
@@ -11,11 +16,17 @@
     <!-- brand-600, the harbour blue in tailwind.config.js. A hex here rather
          than a token because this file is not built by Tailwind. -->
     <meta name="theme-color" content="#0B5D8A" />
-    <!-- The title is rewritten per edition by the allocate-edition-title
-         plugin in vite.config.ts; this is the full edition's. -->
+    <!-- The source carries the full edition's title; the same plugin
+         rewrites it. -->
     <title>Allocate</title>
     <script type="module" crossorigin src="./assets/index-JKaIMxYO.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-CejrKpbx.css">
+    <meta property="og:title" content="Allocate" />
+    <meta property="og:description" content="Allocate is a close-the-month tool for allocators: liquidity, policy drift, manager changes and a review, every number traced to its input. Demo on synthetic data." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mauckson.github.io/demos/allocate/" />
+    <meta property="og:image" content="https://mauckson.github.io/demos/allocate/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
     <div id="root"></div>
