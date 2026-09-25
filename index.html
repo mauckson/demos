@@ -3,39 +3,34 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="Two browser-only demos by Ian Mauck: Allocate, a close-the-month tool for allocators, and Manager Monitor, which reads manager letters and cites every value." />
+<meta name="description" content="Three browser-only demos by Ian Mauck: Allocate, a close-the-month tool for allocators; Manager Monitor, which reads manager letters and cites every value; and Fund Sim, a seed fund portfolio construction simulator." />
 <meta name="theme-color" content="#111417" />
 <title>Demos by Ian Mauck</title>
 <style>
 /* Space Grotesk and JetBrains Mono, self-hosted beside this page (SIL OFL 1.1,
-   the licence text ships with the app build). No request leaves the machine:
+   the license text ships with the app build). No request leaves the machine:
    the two woff2 files sit in ./fonts/, the same two the Allocate build
    bundles. If they are absent or blocked, the stacks below fall through to
-   the platform UI face and the platform mono — nothing here is measured
+   the platform UI face and the platform mono; nothing here is measured
    against the webfont, so the page loses the editorial character and not the
    layout. */
 @font-face{font-family:"Space Grotesk";font-style:normal;font-weight:300 700;font-display:swap;src:url("./fonts/space-grotesk-latin-wght-normal.woff2") format("woff2")}
 @font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:400 700;font-display:swap;src:url("./fonts/jetbrains-mono-latin-wght-normal.woff2") format("woff2")}
 
 /* ============================================================
-   FINAL — the demos index. The same masthead, the same tokens, the same
-   accent substitution; the two demos are case-file rows: mono stamp,
-   headline, teaser, bordered mono CTA.
-
-   Every string — title, description, h1, lede, both headings, both
-   teasers, both CTA labels, both hrefs, the footer — is byte-for-byte
-   the page this replaces. The only words that are not already on that
-   page are the mono furniture: the stamps DEMO 01 / DEMO 02, the folio
-   line (the page's own <title>) and the right-hand micro label (from its
-   own lede and footer).
+   The demos index: the same masthead, tokens and accent substitution;
+   the three demos are case-file rows (mono stamp, headline, teaser,
+   bordered mono CTA). The mono furniture is the stamps DEMO 01 to
+   DEMO 03, the folio line (the page's own <title>) and the right-hand
+   micro label.
 
    The two faces are self-hosted in ./fonts/ beside this file (the
    @font-face pair at the top of this stylesheet). There is no request to
    any external host from this page.
 
    Defects fixed from the winner:
-     - the two CTAs now share a width and a right edge, so the column
-       reads as one column instead of two ragged buttons.
+     - the CTAs now share a width and a right edge, so the column
+       reads as one column instead of ragged buttons.
      - the CTA's own border was --rule (1.57:1). A control's edge has to
        be perceivable, so it is --rule-control (3.08:1); the dividing
        hairlines stay at --rule, because a divider is not a control.
@@ -52,7 +47,7 @@
   /* A control's own edge (WCAG 1.4.11, 3:1): --rule is 1.57:1 and
      --rule-strong is 2.60:1 against the charcoal, so neither can draw a
      button. 3.66:1 flat, 3.07:1 at the ambient glow's brightest point.
-     Spent only on a control edge — never on a divider. */
+     Spent only on a control edge, never on a divider. */
   --rule-control: oklch(0.54 0.012 255);
 
   --brand-200:#C2DAE8;
@@ -206,7 +201,7 @@ body::after{
   letter-spacing:.22em; text-transform:uppercase; color:var(--foreground);
   transition:border-color var(--dur-tick) var(--ease-standard), color var(--dur-tick) var(--ease-standard);
 }
-/* One width for both, so the two rows' buttons share a left and a right
+/* One width for every row, so the rows' buttons share a left and a right
    edge. 268px holds "OPEN MANAGER MONITOR ›" at 11px / 0.22em with room. */
 @media (min-width:768px){ .cta{ width:268px; min-height:44px } }
 .row-link:hover .cta, .row-link:focus-visible .cta{ border-color:var(--accent-line); color:var(--accent) }
@@ -214,7 +209,7 @@ body::after{
 .row-link:hover .cta .chev{ transform:translateX(3px) }
 
 /* ---------- footer ---------- */
-/* the footer's own rule closes the last row, so the two rows are bracketed */
+/* the footer's own rule closes the last row, so the rows are bracketed */
 .foot{ margin-top:0; padding-bottom:64px }
 .foot p{ margin:20px 0 0; max-width:72ch; font-size:.8125rem; line-height:1.65; color:var(--ink-dim) }
 
@@ -222,8 +217,8 @@ body::after{
 /* A demo row's anchor is the whole row, edge to edge, so the ring above draws
    a box the width of the window: its vertical edges fall outside the viewport
    and what is left reads as two horizontal lines across the page. The row's
-   control is the CTA, so the ring goes on the CTA — same 2px, same colour, a
-   box around the thing you are about to press — and the row's own focus tint
+   control is the CTA, so the ring goes on the CTA (same 2px, same color, a
+   box around the thing you are about to press), and the row's own focus tint
    (.row-link:focus-visible, above) still says which row it belongs to. */
 .row-link:focus-visible{ outline:none }
 .row-link:focus-visible .cta{ outline:2px solid var(--ring); outline-offset:2px }
@@ -254,7 +249,7 @@ body::after{
         <span class="mask-line"><span class="mask-inner" style="--d:80ms">Demos</span></span>
       </h1>
     </div>
-    <p class="dek col-dek reveal" style="--d:160ms">Two browser-only demos by Ian Mauck. Nothing is uploaded, no account is created on a server, and every number comes from synthetic data written for the demo.</p>
+    <p class="dek col-dek reveal" style="--d:160ms">Three browser-only demos by Ian Mauck. Nothing is uploaded, no account is created on a server, and every portfolio, fund, manager and letter is synthetic; the few published figures are cited where they appear.</p>
   </div>
 </header>
 
@@ -290,11 +285,27 @@ body::after{
       </div>
     </div>
   </a>
+
+  <a class="row-link reveal" style="--d:400ms" href="./fund-sim/">
+    <div class="wrap"><span class="rule-draw" style="--d:400ms"></span></div>
+    <div class="grid row-grid">
+      <div class="row-stamp">
+        <span class="label-mono accent">Demo 03</span>
+      </div>
+      <div class="row-story">
+        <h2 class="headline">Fund Sim</h2>
+        <p class="body-copy">A seed fund portfolio construction simulator: set the checks, the price, the reserves and the follow-on rule, and it runs thousands of funds on power-law outcomes to show the spread of net multiples, when cash comes back, and what reserves a strategy actually needs. Illustrative assumptions, not market data.</p>
+      </div>
+      <div class="row-cta">
+        <span class="cta">Open Fund Sim <span class="chev" aria-hidden="true">&rsaquo;</span></span>
+      </div>
+    </div>
+  </a>
 </main>
 
 <footer class="wrap foot">
-  <span class="rule-draw" style="--d:400ms"></span>
-  <p>All portfolios, funds, managers and letters here are synthetic and describe no real institution, fund, manager or client. Nothing here is investment advice.</p>
+  <span class="rule-draw" style="--d:480ms"></span>
+  <p>All portfolios, funds, managers and letters here are synthetic, every fund parameter in Fund Sim is an illustrative assumption, and nothing describes a real institution, fund, manager or client. Nothing here is investment advice.</p>
 </footer>
 </body>
 </html>
