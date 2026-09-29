@@ -20,7 +20,9 @@
 /* ============================================================
    The demos index: the same masthead, tokens and accent substitution;
    the three demos are case-file rows (mono stamp, headline, teaser,
-   bordered mono CTA). The mono furniture is the stamps DEMO 01 to
+   bordered mono CTA, and a quieter Use case toggle under it that opens
+   the demo's six plain-language parts after both controls). The mono
+   furniture is the stamps DEMO 01 to
    DEMO 03, the folio line (the page's own <title>) and the right-hand
    micro label.
 
@@ -177,11 +179,21 @@ body::after{
 @media (min-width:768px){ .rows{ margin-top:88px } }
 /* The leading hairline sits INSIDE the wrap, as the site's does, so it runs
    the content column and not the window. The hover tint is full-bleed. */
+/* A row is a div, not a link: it holds two controls (the CTA, which is the
+   link, and the Use case toggle), and a button cannot sit inside an anchor.
+   The whole row still opens its demo, as it did when it was the anchor: the
+   CTA's ::after is stretched over the row (the row is its containing block),
+   so a press on the stamp, headline or teaser is a press on the link, and
+   the toggle and the open panel are lifted above it (below), so neither of
+   them navigates. The tint says so: it lights when the link is hovered or
+   focused, which is everywhere on the row except the toggle and the panel,
+   so it never invites a click that does nothing. The link keeps its own
+   name and its own ring; the stretch adds no tab stop. */
 .row-link{
-  display:block; text-decoration:none; color:inherit;
+  position:relative; display:block; color:inherit;
   transition:background var(--dur-tick) var(--ease-standard);
 }
-.row-link:hover, .row-link:focus-visible{ background:color-mix(in oklab, var(--brand-400) 6%, transparent) }
+.row-link:has(.cta:hover), .row-link:has(.cta:focus-visible){ background:color-mix(in oklab, var(--brand-400) 6%, transparent) }
 .row-grid{ padding-block:32px 36px; align-items:start }
 @media (min-width:768px){ .row-grid{ padding-block:36px 44px; min-height:196px } }
 .row-stamp{
@@ -191,11 +203,18 @@ body::after{
 .row-story{ grid-column:span 4; margin-top:22px }
 @media (min-width:768px){ .row-story{ grid-column:3 / 9; margin-top:0 } }
 .row-story .body-copy{ margin-top:14px; max-width:52ch }
-.row-cta{ grid-column:span 4; margin-top:26px; display:flex }
-@media (min-width:768px){ .row-cta{ grid-column:9 / 13; margin-top:0; justify-content:flex-end; align-items:flex-start } }
+/* The CTA, then the Use case toggle under it, at the column's own edge:
+   the start below 768, where the CTA is the full width as before, and the
+   right from 768, where the CTAs share a 268px width and a right edge. They
+   stack at every width because side by side they do not fit: at 390 the
+   CTA took what the toggle left and "Open Manager Monitor" broke onto two
+   lines (measured), and from 768 four columns hold 268px, not 268px plus
+   the toggle. */
+.row-cta{ grid-column:span 4; margin-top:26px; display:flex; flex-direction:column; align-items:flex-start; gap:10px }
+@media (min-width:768px){ .row-cta{ grid-column:9 / 13; margin-top:0; align-items:flex-end } }
 .cta{
   display:inline-flex; align-items:center; justify-content:center; gap:10px;
-  width:100%; min-height:48px; padding-inline:20px;
+  width:100%; min-height:48px; padding-inline:20px; text-decoration:none;
   border:1px solid var(--rule-control); border-radius:var(--radius);
   font-family:var(--font-mono); font-size:var(--fs-label); font-weight:500;
   letter-spacing:.22em; text-transform:uppercase; color:var(--foreground);
@@ -204,24 +223,58 @@ body::after{
 /* One width for every row, so the rows' buttons share a left and a right
    edge. 268px holds "OPEN MANAGER MONITOR ›" at 11px / 0.22em with room. */
 @media (min-width:768px){ .cta{ width:268px; min-height:44px } }
-.row-link:hover .cta, .row-link:focus-visible .cta{ border-color:var(--accent-line); color:var(--accent) }
+.cta:hover{ border-color:var(--accent-line); color:var(--accent) }
 .cta .chev{ transition:transform var(--dur-tick) var(--ease-out) }
-.row-link:hover .cta .chev{ transform:translateX(3px) }
+.cta:hover .chev{ transform:translateX(3px) }
+.cta::after{ content:""; position:absolute; inset:0 }
+
+/* The Use case toggle: the CTA's mono label, height and 1px control edge
+   (--rule-control, 3:1), no fill, but the muted ink and its own width, so
+   it reads as the second, quieter control. Open, it takes the accent line
+   and ink, the same pair the CTA takes on hover. */
+.usecase-toggle{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-height:48px; padding-inline:16px; margin:0;
+  background:transparent; border:1px solid var(--rule-control); border-radius:var(--radius);
+  font-family:var(--font-mono); font-size:var(--fs-label); font-weight:500; line-height:1;
+  letter-spacing:.22em; text-transform:uppercase; white-space:nowrap; color:var(--muted-foreground);
+  cursor:pointer; position:relative; z-index:1;
+  transition:border-color var(--dur-tick) var(--ease-standard), color var(--dur-tick) var(--ease-standard);
+}
+@media (min-width:768px){ .usecase-toggle{ min-height:44px } }
+.usecase-toggle:hover, .usecase-toggle[aria-expanded="true"]{ border-color:var(--accent-line); color:var(--accent) }
+
+/* The panel: the six parts, label in mono, answer in the teaser's own body
+   copy at the same 52ch measure. It comes after the CTA and the toggle in
+   the DOM, so it opens under the control that opened it and a screen reader
+   meets it after that control, never behind it: below 768 it is the next
+   block in the one column (the toggle stays where it was pressed), and from
+   768 it takes the story's columns on the next grid row. 22px below what
+   ends the row above it at both widths (the grid gap, 16 or 24, plus this
+   margin), the teaser's own 22px from before. Lifted above the row's stretched link, so its text can be read
+   and selected without opening the demo. It carries no display of its own,
+   so the hidden attribute is what closes it. */
+.usecase{
+  grid-column:span 4; margin-top:6px; padding-top:18px; border-top:1px solid var(--rule);
+  position:relative; z-index:1;
+}
+@media (min-width:768px){ .usecase{ grid-column:3 / 9; margin-top:-2px } }
+.usecase dl{ margin:0; display:grid; gap:18px }
+.usecase dt{ line-height:1.4 }
+.usecase dd{ margin:8px 0 0; max-width:52ch }
+@media (prefers-reduced-motion: no-preference){
+  .usecase:not([hidden]){ animation:rise var(--dur-tick) var(--ease-out) both; --rise-y:6px }
+}
 
 /* ---------- footer ---------- */
 /* the footer's own rule closes the last row, so the rows are bracketed */
 .foot{ margin-top:0; padding-bottom:64px }
 .foot p{ margin:20px 0 0; max-width:72ch; font-size:.8125rem; line-height:1.65; color:var(--ink-dim) }
 
+/* One ring for every control on the page. A row is no longer an anchor, so
+   its two controls (the CTA and the Use case toggle) take this ring
+   themselves: a box around the thing you are about to press. */
 :focus-visible{ outline:2px solid var(--ring); outline-offset:2px }
-/* A demo row's anchor is the whole row, edge to edge, so the ring above draws
-   a box the width of the window: its vertical edges fall outside the viewport
-   and what is left reads as two horizontal lines across the page. The row's
-   control is the CTA, so the ring goes on the CTA (same 2px, same color, a
-   box around the thing you are about to press), and the row's own focus tint
-   (.row-link:focus-visible, above) still says which row it belongs to. */
-.row-link:focus-visible{ outline:none }
-.row-link:focus-visible .cta{ outline:2px solid var(--ring); outline-offset:2px }
 ::selection{ background:color-mix(in oklab, var(--brand-400) 40%, transparent) }
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{
@@ -254,7 +307,7 @@ body::after{
 </header>
 
 <main class="rows" id="demos">
-  <a class="row-link reveal" style="--d:240ms" href="./allocate/">
+  <div class="row-link reveal" style="--d:240ms">
     <div class="wrap"><span class="rule-draw" style="--d:240ms"></span></div>
     <div class="grid row-grid">
       <div class="row-stamp">
@@ -265,12 +318,41 @@ body::after{
         <p class="body-copy">A close-the-month tool for allocators: what can become cash and by when, where the portfolio sits against policy, what changed at the managers, and a review with a memo.</p>
       </div>
       <div class="row-cta">
-        <span class="cta">Open Allocate <span class="chev" aria-hidden="true">&rsaquo;</span></span>
+        <a class="cta" href="./allocate/">Open Allocate <span class="chev" aria-hidden="true">&rsaquo;</span></a>
+        <button type="button" class="usecase-toggle" aria-expanded="false" aria-controls="usecase-allocate">Use case</button>
+      </div>
+      <div id="usecase-allocate" class="usecase" hidden>
+        <dl>
+          <div>
+            <dt class="label-mono">In one sentence</dt>
+            <dd class="body-copy">A monthly tool for people running a pool of money, like a university's, across many funds: what can become cash, whether the split matches its plan, and whether fund managers stay within their stated limits.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">Who it is for</dt>
+            <dd class="body-copy">The team investing for a university, a charity or a wealthy family across many outside funds.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">The situation</dt>
+            <dd class="body-copy">Every month they ask: how fast could we raise cash, when some funds pay out slowly? Is the money still split the way the board decided, as some investments outgrow others? Are the fund managers doing what they said?</dd>
+          </div>
+          <div>
+            <dt class="label-mono">What you do here</dt>
+            <dd class="body-copy">Press Try the demo, open Portfolio 1 (made-up data), and follow five steps: Data, Liquidity (cash), Policy (the planned split), Managers and Review.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">What to look for</dt>
+            <dd class="body-copy">The Liquidity step. It sorts the money by how fast it could become cash, from a day to years, and shows when funds you promised money to will next ask for it.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">What it assumes</dt>
+            <dd class="body-copy">The example holdings, including every fund, value, cash movement and document, are made up. The market averages it compares against are rough stand-ins, not official figures, which cost money to license. Private funds report only every three months, and the tool never guesses a newer value, so their values are often about three months old. Nothing leaves your browser.</dd>
+          </div>
+        </dl>
       </div>
     </div>
-  </a>
+  </div>
 
-  <a class="row-link reveal" style="--d:320ms" href="./manager-monitor/">
+  <div class="row-link reveal" style="--d:320ms">
     <div class="wrap"><span class="rule-draw" style="--d:320ms"></span></div>
     <div class="grid row-grid">
       <div class="row-stamp">
@@ -281,12 +363,41 @@ body::after{
         <p class="body-copy">Reads a fund manager's quarterly letter, extracts what matters, cites the sentence behind every value, and drafts the change memo. Scripted mode, no calls to any AI service.</p>
       </div>
       <div class="row-cta">
-        <span class="cta">Open Manager Monitor <span class="chev" aria-hidden="true">&rsaquo;</span></span>
+        <a class="cta" href="./manager-monitor/">Open Manager Monitor <span class="chev" aria-hidden="true">&rsaquo;</span></a>
+        <button type="button" class="usecase-toggle" aria-expanded="false" aria-controls="usecase-manager-monitor">Use case</button>
+      </div>
+      <div id="usecase-manager-monitor" class="usecase" hidden>
+        <dl>
+          <div>
+            <dt class="label-mono">In one sentence</dt>
+            <dd class="body-copy">A tool that reads the letter a fund manager sends every three months, pulls out key facts, shows the sentence behind each one, and drafts a short note on what changed since the last letter.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">Who it is for</dt>
+            <dd class="body-copy">Someone at an investment office who reads each firm's letter every three months and writes up what changed.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">The situation</dt>
+            <dd class="body-copy">Each letter covers the same facts: how much money the firm manages, its team, fees, results and anything unusual. Pulling them out, spotting what changed and writing a memo is slow, and easy to get wrong.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">What you do here</dt>
+            <dd class="body-copy">Pick a firm and a quarter. The tool lists the facts, ranks what changed by importance and drafts the memo. Here the letters are made up and the results saved, not read live by AI.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">What to look for</dt>
+            <dd class="body-copy">The citation. Click any number and the letter scrolls to its source sentence; a number without one is not worth trusting.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">What it assumes</dt>
+            <dd class="body-copy">The 17 managers and their letters are made up for the demo. The public demo shows answers saved in advance instead of asking an AI live, so no sign-up is needed and it gives the same answer every time. A live mode exists but is turned off here.</dd>
+          </div>
+        </dl>
       </div>
     </div>
-  </a>
+  </div>
 
-  <a class="row-link reveal" style="--d:400ms" href="./fund-sim/">
+  <div class="row-link reveal" style="--d:400ms">
     <div class="wrap"><span class="rule-draw" style="--d:400ms"></span></div>
     <div class="grid row-grid">
       <div class="row-stamp">
@@ -297,15 +408,57 @@ body::after{
         <p class="body-copy">A seed fund portfolio construction simulator: set the checks, the price, the reserves and the follow-on rule, and it runs thousands of funds on power-law outcomes to show the spread of net multiples, when cash comes back, and what reserves a strategy actually needs. Illustrative assumptions, not market data.</p>
       </div>
       <div class="row-cta">
-        <span class="cta">Open Fund Sim <span class="chev" aria-hidden="true">&rsaquo;</span></span>
+        <a class="cta" href="./fund-sim/">Open Fund Sim <span class="chev" aria-hidden="true">&rsaquo;</span></a>
+        <button type="button" class="usecase-toggle" aria-expanded="false" aria-controls="usecase-fund-sim">Use case</button>
+      </div>
+      <div id="usecase-fund-sim" class="usecase" hidden>
+        <dl>
+          <div>
+            <dt class="label-mono">In one sentence</dt>
+            <dd class="body-copy">A simulator that runs thousands of imaginary startup-investing funds to show how choices, like how many startups to fund and how much to save for extra bets on the ones doing well, change the results.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">Who it is for</dt>
+            <dd class="body-copy">Anyone curious how a venture capital fund (a fund that invests in startups) decides how many to back.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">The situation</dt>
+            <dd class="body-copy">A venture fund puts money into many startups knowing most will fail and one or two might pay for everything. Before picking any, it decides how much to put into each and how much to keep for investing more in the ones that do well.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">What you do here</dt>
+            <dd class="body-copy">Change those choices and the simulator runs 10,000 made-up funds with the same rules. Every starting number is an example, not market data.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">What to look for</dt>
+            <dd class="body-copy">How widely results swing: how often the fund avoids a loss, and how often one startup alone pays back the whole fund.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">What it assumes</dt>
+            <dd class="body-copy">Every starting number is a labeled example you can change, not market data. Results follow a power law: most startups fail and a few big wins earn most of the money. The random draws come from a fixed seed, a set number that makes any run repeatable. An in-app panel compares results with published figures and lists the model's shortcuts.</dd>
+          </div>
+        </dl>
       </div>
     </div>
-  </a>
+  </div>
 </main>
 
 <footer class="wrap foot">
   <span class="rule-draw" style="--d:480ms"></span>
   <p>All portfolios, funds, managers and letters here are synthetic, every fund parameter in Fund Sim is an illustrative assumption, and nothing describes a real institution, fund, manager or client. Nothing here is investment advice.</p>
 </footer>
+<script>
+/* The Use case toggles: a disclosure each. Closed on every load, nothing is
+   remembered, and no request leaves the page. */
+document.querySelectorAll('.usecase-toggle').forEach(function (button) {
+  var panel = document.getElementById(button.getAttribute('aria-controls'));
+  if (!panel) return;
+  button.addEventListener('click', function () {
+    var open = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', open ? 'false' : 'true');
+    panel.hidden = open;
+  });
+});
+</script>
 </body>
 </html>
