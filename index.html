@@ -7,15 +7,20 @@
 <meta name="theme-color" content="#111417" />
 <title>Demos by Ian Mauck</title>
 <style>
-/* Space Grotesk and JetBrains Mono, self-hosted beside this page (SIL OFL 1.1,
-   the license text ships with the app build). No request leaves the machine:
-   the two woff2 files sit in ./fonts/, the same two the Allocate build
-   bundles. If they are absent or blocked, the stacks below fall through to
-   the platform UI face and the platform mono; nothing here is measured
-   against the webfont, so the page loses the editorial character and not the
-   layout. */
-@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:300 700;font-display:swap;src:url("./fonts/space-grotesk-latin-wght-normal.woff2") format("woff2")}
-@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:400 700;font-display:swap;src:url("./fonts/jetbrains-mono-latin-wght-normal.woff2") format("woff2")}
+/* The broadsheet pairing (TYPE-1), self-hosted beside this page (SIL OFL 1.1,
+   the license text ships with the app build): Newsreader for the display,
+   Schibsted Grotesk for reading text, IBM Plex Mono for labels. No request
+   leaves the machine: the four woff2 files sit in ./fonts/, the same four
+   the Allocate build bundles. Newsreader is the opsz-and-wght file, so the
+   masthead and the row titles each get the optical size drawn for their own
+   size. If a file is absent or blocked, the stacks below fall through to
+   Georgia, the platform UI face and the platform mono; nothing here is
+   measured against the webfont, so the page loses the editorial character
+   and not the layout. */
+@font-face{font-family:"Newsreader";font-style:normal;font-weight:200 800;font-display:swap;src:url("./fonts/newsreader-latin-opsz-normal.woff2") format("woff2")}
+@font-face{font-family:"Schibsted Grotesk";font-style:normal;font-weight:400 900;font-display:swap;src:url("./fonts/schibsted-grotesk-latin-wght-normal.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:400;font-display:swap;src:url("./fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:500;font-display:swap;src:url("./fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2")}
 
 /* ============================================================
    The demos index: the same masthead, tokens and accent substitution;
@@ -26,9 +31,12 @@
    DEMO 03, the folio line (the page's own <title>) and the right-hand
    micro label.
 
-   The two faces are self-hosted in ./fonts/ beside this file (the
-   @font-face pair at the top of this stylesheet). There is no request to
-   any external host from this page.
+   The three faces are self-hosted in ./fonts/ beside this file (the
+   @font-face rules at the top of this stylesheet). There is no request to
+   any external host from this page. The masthead and the row titles are
+   the display serif; the dek, the teasers, the Use case answers and the
+   footer read in the text face; the stamps, folio, CTAs and toggles are
+   the mono.
 
    Defects fixed from the winner:
      - the CTAs now share a width and a right edge, so the column
@@ -84,8 +92,9 @@
      Allocate's type rule puts under an uppercase label. */
   --fs-micro:.6875rem;
 
-  --font-display:"Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-mono:"JetBrains Mono", ui-monospace, monospace;
+  --font-display:"Newsreader", Georgia, serif;
+  --font-text:"Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:"IBM Plex Mono", ui-monospace, monospace;
 }
 @media (min-width:768px){ :root{ --gutter:40px } }
 @media (min-width:1280px){ :root{ --gutter:64px } }
@@ -100,7 +109,7 @@ body{
     radial-gradient(50rem 35rem at -10% 10%, color-mix(in oklab, var(--brand-600) calc(var(--glow-b)*100%), transparent), transparent);
   background-attachment:fixed;
   color:var(--foreground);
-  font-family:var(--font-display);
+  font-family:var(--font-text);
   font-synthesis-weight:none;
   -webkit-font-smoothing:antialiased;
 }
@@ -118,13 +127,17 @@ body::after{
 }
 @media (min-width:768px){ .grid{ grid-template-columns:repeat(12,minmax(0,1fr)); gap:24px } }
 
+/* The display is the broadsheet's: Newsreader at 600, tracked -0.02em and
+   set at 0.92, the values the twenty-judge vote was rendered at (a serif at
+   600 wants far less negative tracking than the grotesk at 700 it
+   replaced). The row titles are the same cut at their own size. */
 .display-xl{
-  font-family:var(--font-display); font-size:var(--fs-display-xl); font-weight:700;
-  line-height:.86; letter-spacing:-.045em; margin:0;
+  font-family:var(--font-display); font-size:var(--fs-display-xl); font-weight:600;
+  line-height:.92; letter-spacing:-.02em; font-optical-sizing:auto; margin:0;
 }
-.headline{ font-size:var(--fs-headline); font-weight:700; line-height:1.15; letter-spacing:-.02em; margin:0 }
-.dek{ font-size:var(--fs-dek); font-weight:400; line-height:1.45; letter-spacing:-.01em; color:var(--muted-foreground); margin:0 }
-.body-copy{ font-size:var(--fs-body); line-height:1.65; margin:0; color:var(--muted-foreground) }
+.headline{ font-family:var(--font-display); font-size:var(--fs-headline); font-weight:600; line-height:1.15; letter-spacing:-.02em; font-optical-sizing:auto; margin:0 }
+.dek{ font-family:var(--font-text); font-size:var(--fs-dek); font-weight:400; line-height:1.45; letter-spacing:-.01em; color:var(--muted-foreground); margin:0 }
+.body-copy{ font-family:var(--font-text); font-size:var(--fs-body); line-height:1.65; margin:0; color:var(--muted-foreground) }
 .label-mono{ font-family:var(--font-mono); font-size:var(--fs-label); font-weight:500; line-height:1; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-dim); margin:0 }
 .micro-mono{ font-family:var(--font-mono); font-size:var(--fs-micro); font-weight:400; line-height:1.2; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-dim); margin:0 }
 .accent{ color:var(--accent) }
