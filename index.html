@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="Three browser-only demos by Ian Mauck: Allocate, a close-the-month tool for allocators; Manager Monitor, which reads manager letters and cites every value; and Fund Sim, a seed fund portfolio construction simulator." />
+<meta name="description" content="Four browser-only demos by Ian Mauck: Allocate, a close-the-month tool for allocators; Manager Monitor, which reads manager letters and cites every value; Fund Sim, a seed fund portfolio construction simulator; and Runway, a cash-runway model for a young software company selling to institutions." />
 <meta name="theme-color" content="#111417" />
 <title>Demos by Ian Mauck</title>
 <style>
@@ -24,11 +24,11 @@
 
 /* ============================================================
    The demos index: the same masthead, tokens and accent substitution;
-   the three demos are case-file rows (mono stamp, headline, teaser,
+   the four demos are case-file rows (mono stamp, headline, teaser,
    bordered mono CTA, and a quieter Use case toggle under it that opens
    the demo's six plain-language parts after both controls). The mono
    furniture is the stamps DEMO 01 to
-   DEMO 03, the folio line (the page's own <title>) and the right-hand
+   DEMO 04, the folio line (the page's own <title>) and the right-hand
    micro label.
 
    The three faces are self-hosted in ./fonts/ beside this file (the
@@ -315,7 +315,7 @@ body::after{
         <span class="mask-line"><span class="mask-inner" style="--d:80ms">Demos</span></span>
       </h1>
     </div>
-    <p class="dek col-dek reveal" style="--d:160ms">Three browser-only demos by Ian Mauck. Nothing is uploaded, no account is created on a server, and every portfolio, fund, manager and letter is synthetic; the few published figures are cited where they appear.</p>
+    <p class="dek col-dek reveal" style="--d:160ms">Four browser-only demos by Ian Mauck. Nothing is uploaded, no account is created on a server, and every portfolio, fund, manager and letter is synthetic; the few published figures are cited where they appear.</p>
   </div>
 </header>
 
@@ -454,11 +454,56 @@ body::after{
       </div>
     </div>
   </div>
+
+  <div class="row-link reveal" style="--d:480ms">
+    <div class="wrap"><span class="rule-draw" style="--d:480ms"></span></div>
+    <div class="grid row-grid">
+      <div class="row-stamp">
+        <span class="label-mono accent">Demo 04</span>
+      </div>
+      <div class="row-story">
+        <h2 class="headline">Runway</h2>
+        <p class="body-copy">Will the money arrive before the cash runs out? A cash-runway model for a young software company selling to institutions. Illustrative assumptions, not market data.</p>
+      </div>
+      <div class="row-cta">
+        <a class="cta" href="./runway/">Open Runway <span class="chev" aria-hidden="true">&rsaquo;</span></a>
+        <button type="button" class="usecase-toggle" aria-expanded="false" aria-controls="usecase-runway">Use case</button>
+      </div>
+      <div id="usecase-runway" class="usecase" hidden>
+        <dl>
+          <div>
+            <dt class="label-mono">In one sentence</dt>
+            <dd class="body-copy">A tool that shows how long a young software company can keep going while it waits for universities, charities and investment firms to start paying for what it sells.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">Who it is for</dt>
+            <dd class="body-copy">A founder, an early employee or an investor in small companies that sell software to organizations investing large sums, like a university's investment office.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">The situation</dt>
+            <dd class="body-copy">In this model, a committee has to approve each purchase, and the money comes out of a yearly budget that is set months before the year begins. A customer who says yes in the spring may not pay until the next budget year starts, while the company pays salaries every month.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">What you do here</dt>
+            <dd class="body-copy">Set the company's starting cash and monthly spending, how many customers it wins each month and what each pays. Then set the buyer's calendar: when the budget year starts, how often the committee meets and how far ahead the budget is fixed. Watch three cash lines: the founder's plan, the buyer's calendar, and the company with no customers at all. You can also save versions side by side, or look at five made-up companies at once.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">What to look for</dt>
+            <dd class="body-copy">How much later the first customer's money arrives on the buyer's calendar, whether cash drops below zero before then, and how much more cash the calendar needs than the founder's plan.</dd>
+          </div>
+          <div>
+            <dt class="label-mono">What it assumes</dt>
+            <dd class="body-copy">Both lines win the same customers at the same price. Only the timing differs. Each customer pays a year at a time, a month after each bill, and by default nine in ten renew each year. Spending stays flat. The calendar delays deals but never loses them, and no buyer pays mid-year from a spare budget. All the numbers are made up for illustration.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
 </main>
 
 <footer class="wrap foot">
-  <span class="rule-draw" style="--d:480ms"></span>
-  <p>All portfolios, funds, managers and letters here are synthetic, every fund parameter in Fund Sim is an illustrative assumption, and nothing describes a real institution, fund, manager or client. Nothing here is investment advice.</p>
+  <span class="rule-draw" style="--d:560ms"></span>
+  <p>All portfolios, funds, managers and letters here are synthetic, every fund parameter in Fund Sim is an illustrative assumption, every company, prospect and figure in Runway is made up, and nothing describes a real institution, fund, manager, company or client. Nothing here is investment advice.</p>
 </footer>
 <script>
 /* The Use case toggles: a disclosure each. Closed on every load, nothing is

@@ -1,6 +1,6 @@
 # Demos
 
-Three browser-only demos by Ian Mauck. All three run entirely in your browser: nothing is uploaded, no account is created on a server, and no data leaves the page. Every portfolio, fund, manager and letter is synthetic, written for the demo; the few published figures (index returns in Allocate's stress scenarios, and company outcome shares in Fund Sim's calibration table) are cited where they appear.
+Four browser-only demos by Ian Mauck. All four run entirely in your browser: nothing is uploaded, no account is created on a server, and no data leaves the page. Every portfolio, fund, manager and letter is synthetic, written for the demo; the few published figures (index returns in Allocate's stress scenarios, and company outcome shares in Fund Sim's calibration table) are cited where they appear.
 
 ## Allocate
 
@@ -13,6 +13,10 @@ Manager Monitor reads a fund manager's quarterly letter, extracts a fixed set of
 ## Fund Sim
 
 Fund Sim is a seed fund portfolio construction simulator. Set a fund's size, fees, carry, number of first checks, entry price, reserves and follow-on strategy, and it runs thousands of funds on a power-law outcome distribution to show the spread of net multiples, the chance of returning the fund, when cash comes back, and the reserves a strategy actually needs. Three scenarios can be compared side by side, and an LP view shows calls, distributions and net cash flow by year, with net IRR across runs. Every default is an illustrative assumption, not market data, and the simulation runs in your browser. Open it at `fund-sim/`.
+
+## Runway
+
+Runway is a cash-runway model for a young software company selling to institutions: it shows how long the company can keep going while it waits for universities, charities and investment firms to start paying for what it sells. Every company, prospect and figure is made up, and the July budget year is the one setting with a source. Open it at `runway/`.
 
 ## Data disclaimer
 
